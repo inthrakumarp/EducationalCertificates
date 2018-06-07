@@ -1,0 +1,24 @@
+<div ng-controller="transactionController" ng-if="showTransactionScreen" >
+	<table id="transId">
+		<tr>
+			<td colspan="5"><h3>Block chain transaction view</h3></td>
+			</tr>
+		<tr>
+			<th>UUID</th>
+			<th>School Address</th>
+			<th>Candidate Address</th>
+			<th>Approved by Provider</th>
+			<th>Approved by School</th>
+			</tr>
+			<tr>
+				<td colspan="5" align="center">
+					<div class="loader" ng-show="loader"></div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5" align="center" ng-if="noRecord">
+					<span>No transaction records.</span>
+				</td>
+			</tr>
+	</table>
+</div>

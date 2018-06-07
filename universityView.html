@@ -1,0 +1,120 @@
+<div ng-controller="universityController" ng-if="LoginUniversityAddress">
+	<form name="frmSchoolCand" ng-submit="fn_submit()">
+		<table>
+			<tr>
+				<td><b>University code:</b></td>
+				<td>{{universityCode}}</td>
+			</tr>
+			<tr>
+				<td><b>University Name:</b></td>
+				<td>{{universityName}}</td>
+			</tr>
+			<tr>
+				<td><b>University Address:</b></td>
+				<td>{{LoginUniversityAddress}}</td>
+			</tr>
+
+			<!--<tr>
+				<td colspan="2" align="center">
+					<table class="innerTokenTable">
+						<tr>
+							<td width="25%"><b>Enter UUID</b><span> *</span>:</b></td>
+							<td  width="20%"><input type="text" name="txtUUIDVal" ng-model="txtUUIDVal" ng-required="true" ng-change="fn_clear()"></td>
+							<td align="left"><span ng-show="frmSchoolCand.txtUUIDVal.$invalid">Please enter UUID</span></td>
+				</tr>
+				<tr>
+					<td width="25%"><b>Enter Token<span> *</span>:</b></td>
+					<td width="20%"><input type="text" name="txtTokenVal" ng-model="txtTokenVal" ng-required="true" ng-change="fn_clear()"></td>
+					<td align="left"><span ng-show="frmSchoolCand.txtTokenVal.$invalid">Please enter token</span></td>
+					<tr>
+						<td colspan="3" align="center"> <span> {{Warnigs}}</span></td>
+					</tr>
+					<tr>
+						<td colspan="3" align="center"><input class="button" type="submit" name="submit" value="Show details" /></td>
+					</tr>
+				</tr>
+				</table>
+				</td>
+			</tr>-->
+			<tr>
+				<td colspan="2" align="center">
+					<div class="loader" ng-show="Candloader"></div>
+				</td>
+			</tr>
+
+			<tr ng-if="showUUID">
+				<td colspan="2" align="center">
+					<table class="innerTokenTable">
+						<tr >
+							<td width="40%"><b>Select candidate to view results <span>*</span>:</b></td>
+							<td width="30%"><select ng-model="candVal" name="candVal" ng-required="true" ng-change="fn_getCandDetails(candVal)">
+					    <option  value="" >--Select candidate--</option>
+						<option ng-repeat="cand in UUIDArray" value="{{cand}}">{{cand}}</option>					
+					</select></td>
+							<td><span ng-if="frmSchoolCand.candVal.$invalid">Please select candidate</span></td>
+						</tr>
+			</tr>
+			</table>
+			</td>
+			</tr>
+
+			<tr>
+				<td colspan="2" align="center">
+					<div class="loader" ng-show="loader"></div>
+				</td>
+			</tr>
+			<tr ng-show="ShowCanDetails">
+				<td colspan="2">
+					<table>
+						<tbody>
+							<th>Session</th>
+							<th>School</th>
+							<th>School Address</th>
+							<th>Candidate code</th>
+							<th>Candidate name</th>
+							<th>Candidate Address</th>
+							<th>Result Code</th>
+							<th>Total Points</th>
+							<th>Description</th>
+						</tbody>
+						<tr>
+							<td>{{CandDetails.session}}</td>
+							<td>{{CandDetails.schoolName}}</td>
+							<td>{{CandDetails.schoolAddress}}</td>
+							<td>{{CandDetails.candCode}}</td>
+							<td>{{CandDetails.candName}}</td>
+							<td>{{CandDetails.candAddress}}</td>
+							<td>{{CandDetails.resultCode}}</td>
+							<td>{{CandDetails.totalPoints}}</td>
+							<td>{{CandDetails.resultDescription}}</td>
+						</tr>
+						<tr>
+
+							<td colspan="9" align="center">&nbsp;</td>
+						</tr>
+						<tr style="background-color:white">
+
+							<td colspan="8" align="center">
+								<table class="innerTable">
+									<tbody>
+										<th>subject</th>
+										<th>Level</th>
+										<th>Grade</th>
+									</tbody>
+
+									<tr ng-repeat="SubDetail in CandDetails.subjects">
+										<td>{{SubDetail.subjectName}}</td>
+										<td>{{SubDetail.subjectLvl}}</td>
+										<td>{{SubDetail.subjectGrade}}</td>
+									</tr>
+								</table>
+							</td>
+							<td ng-if="CandDetails.resultDescription=='DIPLOMA AWARDED'" align="center"><img src="images/diplomaAwarded.jpg" width="100px" height="100px"></td>
+							<td ng-if="CandDetails.resultDescription=='COURSE AWARDED'" align="center"><img src="images/courseAwarded.jpg" width="100px" height="100px"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

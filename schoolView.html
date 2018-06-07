@@ -1,0 +1,92 @@
+<div ng-controller="schoolController" ng-if="showSchoolScreen">
+	<form name="frmSchoolCand" ng-submit="fn_submit()">
+		<table>
+			<tr>
+				<td><b>School Address:</b></td>
+				<td>{{LoginschoolAddress}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td><b>School name:</b></td>
+				<td>{{schoolName}}</td>
+			</tr>
+			<tr>
+				<td><b>Session:</b></td>
+				<td>{{session}}</td>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Select candidate*:</b></td>
+				<td><select ng-model="candVal" name="candVal" ng-required="true" ng-change="fn_getCand(candVal)">
+						<option ng-repeat="cand in allCandDetails"	value="{{cand.candCode}}">{{cand.candName}}</option>					
+					</select><span ng-show="frmSchoolCand.candVal.$invalid">Please select candidate</span></td>
+				</td>
+			</tr>
+			<tr ng-show="loader">
+				<td colspan="2" align="center">
+					<div class="loader" ></div>
+				</td>
+			</tr>
+			<tr ng-show="ShowCanDetails">
+				<td colspan="2">
+					<table>
+						<tbody>
+							<th>Candidate code</th>
+							<th>Candidate name</th>
+							<th>Candidate Address</th>
+							<th>Result Code</th>
+							<th>Total Points</th>
+							<th>Description</th>
+						</tbody>
+						<tr ng-repeat=" CandDetail in CandDetails">
+							<td>{{CandDetail.candCode}}</td>
+							<td>{{CandDetail.candName}}</td>
+							<td>{{CandDetail.candAddress}}</td>
+							<td>{{CandDetail.resultCode}}</td>
+							<td>{{CandDetail.totalPoints}}</td>
+							<td>{{CandDetail.resultDescription}}</td>
+						</tr>
+						<tr>
+
+							<td colspan="6" align="center">&nbsp;</td>
+						</tr>
+						<tr style="background-color:white">
+
+							<td colspan="5" align="center">
+								<table class="innerTable">
+									<tbody>
+										<th>subject</th>
+										<th>Level</th>
+										<th>Grade</th>
+									</tbody>
+
+									<tr ng-repeat="SubDetail in CandDetails[0].subjects">
+										<td>{{SubDetail.subjectName}}</td>
+										<td>{{SubDetail.subjectLvl}}</td>
+										<td>{{SubDetail.subjectGrade}}</td>
+									</tr>
+								</table>
+							</td>
+							<td ng-if="CandDetails[0].resultDescription=='DIPLOMA AWARDED'" align="center"><img src="images/diplomaAwarded.jpg" width="100px" height="100px"></td>
+							<td ng-if="CandDetails[0].resultDescription=='COURSE AWARDED'" align="center"><img src="images/courseAwarded.jpg" width="100px" height="100px"></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+			<td colspan="2" align="center"><span> {{Warnigs}}</span></td>
+			</tr>
+			<tr><td colspan="2" align="center"> <span style="color:green !important;"> {{successMessage}}<br>{{returnHashString}}</span></td>	</tr>
+			<tr ng-hide="hideSubmit">
+				<td colspan="2" align="center"><input class="button" type="submit" name="submit" value="Approve and Send to candidate" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<div class="loader" ng-show="loaderSubmit"></div>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

@@ -1,0 +1,39 @@
+<html ng-app="MainModule">
+
+<head>
+	<title>Educational certificates</title>
+	<script type="text/javascript" src="angular/angular.js"></script>
+	<script type="text/javascript" src="angular/angularjs-crypto.js"></script>
+	<script type="text/javascript" src="angular/aes.js"></script>
+	<script type="text/javascript" src="angular/CryptoJSCipher.js"></script>
+	<script type="text/javascript" src="web3/dist/web3.js"></script>	
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/controllers/result-provider-controller.js"></script>
+	<script type="text/javascript" src="js/controllers/school-controller.js"></script>
+	<script type="text/javascript" src="js/controllers/candidate-controller.js"></script>	
+	<script type="text/javascript" src="js/controllers/university-controller.js"></script>
+	<script type="text/javascript" src="js/controllers/transaction-controller.js"></script>
+	<!--<script type="text/javascript" src="js/factories/school-cand-details.js"></script>
+        <script type="text/javascript" src="js/directives/channel-logo.js"></script>-->
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	
+</head>
+
+<body>
+	<div class="container">
+
+<header>
+   <h1>Educational certificates</h1>
+    <h3 align="left">{{whohaslogged}}</h3>
+</header>
+	<div align="center"><h1>{{errorMessage}}</h1></div>
+	<div ng-include="'resultProviderView.html'"></div>
+	<div ng-include="'schoolView.html'"></div>
+	<div ng-include="'candidateView.html'"></div>
+	<div ng-include="'universityView.html'"></div>
+	<div ng-include="'transactionView.html'"></div>
+	</div>
+	<footer>Copyright &copy; blockchain.com</footer>
+</body>
+
+</html>
