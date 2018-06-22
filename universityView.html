@@ -1,16 +1,16 @@
 <div ng-controller="universityController" ng-if="LoginUniversityAddress">
-	<form name="frmSchoolCand" ng-submit="fn_submit()">
+	<form name="frmSchoolCand">
 		<table>
 			<tr>
 				<td><b>University code:</b></td>
 				<td>{{universityCode}}</td>
 			</tr>
 			<tr>
-				<td><b>University Name:</b></td>
+				<td><b>University name:</b></td>
 				<td>{{universityName}}</td>
 			</tr>
 			<tr>
-				<td><b>University Address:</b></td>
+				<td><b>University address:</b></td>
 				<td>{{LoginUniversityAddress}}</td>
 			</tr>
 
@@ -36,16 +36,16 @@
 				</table>
 				</td>
 			</tr>-->
-			<tr>
+			<tr  ng-if="Candloader">
 				<td colspan="2" align="center">
-					<div class="loader" ng-show="Candloader"></div>
+					<div class="loader"></div>
 				</td>
 			</tr>
 
 			<tr ng-if="showUUID">
 				<td colspan="2" align="center">
 					<table class="innerTokenTable">
-						<tr >
+						<tr>
 							<td width="40%"><b>Select candidate to view results <span>*</span>:</b></td>
 							<td width="30%"><select ng-model="candVal" name="candVal" ng-required="true" ng-change="fn_getCandDetails(candVal)">
 					    <option  value="" >--Select candidate--</option>
@@ -58,23 +58,23 @@
 			</td>
 			</tr>
 
-			<tr>
+			<tr ng-if="loader">
 				<td colspan="2" align="center">
-					<div class="loader" ng-show="loader"></div>
+					<div class="loader"></div>
 				</td>
 			</tr>
-			<tr ng-show="ShowCanDetails">
+			<tr ng-if="ShowCanDetails">
 				<td colspan="2">
 					<table>
 						<tbody>
 							<th>Session</th>
 							<th>School</th>
-							<th>School Address</th>
+							<th>School address</th>
 							<th>Candidate code</th>
 							<th>Candidate name</th>
-							<th>Candidate Address</th>
-							<th>Result Code</th>
-							<th>Total Points</th>
+							<th>Candidate address</th>
+							<th>Result code</th>
+							<th>Total points</th>
 							<th>Description</th>
 						</tbody>
 						<tr>
@@ -97,7 +97,7 @@
 							<td colspan="8" align="center">
 								<table class="innerTable">
 									<tbody>
-										<th>subject</th>
+										<th>Subject</th>
 										<th>Level</th>
 										<th>Grade</th>
 									</tbody>
@@ -112,9 +112,13 @@
 							<td ng-if="CandDetails.resultDescription=='DIPLOMA AWARDED'" align="center"><img src="images/diplomaAwarded.jpg" width="100px" height="100px"></td>
 							<td ng-if="CandDetails.resultDescription=='COURSE AWARDED'" align="center"><img src="images/courseAwarded.jpg" width="100px" height="100px"></td>
 						</tr>
+						<tr ng-if="transViewlink">
+							<td colspan="9"><a href="#" ng-click="showAdvanced($event)">View transaction details for this result</a></td>
+						</tr>
 					</table>
 				</td>
 			</tr>
+
 		</table>
 	</form>
 </div>

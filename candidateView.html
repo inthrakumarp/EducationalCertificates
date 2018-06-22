@@ -2,14 +2,14 @@
 	<form name="frmSchoolCand" ng-submit="fn_submit()">
 		<table>
 			<tr>
-				<td><b>Candidate Address:</b></td>
+				<td><b>Candidate address:</b></td>
 				<td>{{LogincandidateAddress}}</td>
 			</tr>
 			<tr>
 				<td colspan="2">&nbsp;</td>
 			</tr>
 			<tr>
-				<td><b>school name:</b></td>
+				<td><b>School name:</b></td>
 				<td>{{schoolName}}</td>
 			</tr>
 			<tr>
@@ -21,20 +21,20 @@
 				<td><b>Candidate name:</b></td>
 				<td>{{candidateName}}</td>
 			</tr>
-			<tr>
+			<tr  ng-if="loader">
 				<td colspan="2" align="center">
-					<div class="loader" ng-show="loader"></div>
+					<div class="loader"></div>
 				</td>
 			</tr>
-			<tr ng-show="ShowCanDetails">
+			<tr ng-if="ShowCanDetails">
 				<td colspan="2">
 					<table>
 						<tbody>
 							<th>Candidate code</th>
 							<th>Candidate name</th>
-							<th>Candidate Address</th>
-							<th>Result Code</th>
-							<th>Total Points</th>
+							<th>Candidate address</th>
+							<th>Result code</th>
+							<th>Total points</th>
 							<th>Description</th>
 						</tbody>
 						<tr ng-repeat=" CandDetail in CandDetails">
@@ -54,7 +54,7 @@
 							<td colspan="5" align="center">
 								<table class="innerTable">
 									<tbody>
-										<th>subject</th>
+										<th>Subject</th>
 										<th>Level</th>
 										<th>Grade</th>
 									</tbody>
@@ -80,13 +80,13 @@
 					</select></td>
 										<td><span ng-if="frmSchoolCand.universityVal.$invalid">Please select university</span></td>
 									</tr>
-									<tr ng-show="ShowUniversityDetails">
+									<tr ng-if="ShowUniversityDetails">
 										<td colspan="3">
 											<table>
 												<tbody>
 													<th>University code</th>
 													<th>University name</th>
-													<th>University Address</th>
+													<th>University address</th>
 												</tbody>
 												<tr ng-repeat=" uniDetails in getUniversityDetails">
 													<td>{{uniDetails.universityCode}}</td>
@@ -95,13 +95,13 @@
 												</tr>
 											</table>
 									</tr>
-									<tr>
+									<tr ng-if="loaderSubmit">
 										<td colspan="3" align="center">
-											<div class="loader" ng-show="Checkloader"></div>
+											<div class="loader" ></div>
 										</td>
 									</tr>
-									<tr>
-										<td colspan="3" align="center" ng-if="hideSubmit"><input class="button" type="submit" name="submit" value="Share to university" /></td>
+									<tr ng-if="hideSubmit">
+										<td colspan="3" align="center"><input class="button" type="submit" name="submit" value="Share to university" /></td>
 									</tr>
 								</table>
 								</td>
@@ -114,7 +114,7 @@
 			</tr>
 
 			<tr>
-				<td colspan="2" align="center"> <span style="color:green !important;"> {{successMessage}}<br>{{returnHashString}}</span></td>
+				<td colspan="2" align="center"><div class="loader" ng-if="loaderStatus"></div><span ng-if="loaderStatusMsg">{{(statusMsg)}}</span> <span style="color:green !important;"> {{successMessage}}<br>{{returnHashString}}</span></td>
 			</tr>
 			<!--<tr ng-hide="hideSubmit">
 				<td colspan="2" align="center"><input class="button" type="submit" name="submit" value="Create token" /></td>

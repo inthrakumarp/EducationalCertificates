@@ -1,61 +1,75 @@
 //app.controller('controller name',[dependencies, call back function]);
 //scope is a object used to join both view and controller
-app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Service_schoolCandDetails', 'service_universities', function ($scope, $rootScope, $filter, Service_schoolCandDetails, service_universities) {
+app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Service_schoolCandDetails', 'service_universities', '$interval', '$sessionStorage', function ($scope, $rootScope, $filter, Service_schoolCandDetails, service_universities, $interval, $sessionStorage) {
 
     $scope.ShowCanDetails = false;
     $scope.UUID = "";
     $scope.hasString = "";
     $scope.hideToken = true;
-    $scope.Checkloader = false;
     $scope.schoolCandDetails = Service_schoolCandDetails.schoolCandDetails;
     $scope.universityDetails = service_universities.universityDetails;
     $scope.ShowUniversityDetails = false;
     $scope.Candfound = false;
+    $scope.hideSubmit = false;
+    $scope.loaderSubmit = false;
+    $scope.loaderStatus = false;
+    $scope.loaderStatusMsg = false;
+
+    console.log($sessionStorage.TransHashList);
 
     $scope.fn_getUnivercity = function (universityCode) {
-        if (typeof $scope.universityVal != 'undefined' && $scope.universityVal != '') {
+        console.log(universityCode);
+        $scope.loaderSubmit = true;
+        $scope.universityVal = universityCode;
+        if (typeof universityCode != 'undefined' && universityCode != '') {
             $scope.Warnigs = "";
             $scope.successMessage = "";
             $scope.returnHashString = "";
             $scope.getUniversityDetails = ($filter('filter')($scope.universityDetails, { universityCode: universityCode }));
             $scope.ShowUniversityDetails = true;
-            $scope.Checkloader = true;
+            $scope.loaderStatus = false;
+            $scope.loaderStatusMsg = false;
 
-            var UniRes;            
+            var UniRes;
             $rootScope.CandResultContract.listInsCandEvents(0, UUID
                 , function (error, result) {
-                    if (!error) {   
+                    if (!error) {
                         $scope.Warnigs = "";
                         $scope.endLoop = false;
-                        angular.forEach(result[0], function (Univalue, Unikey) {
-                            if(!$scope.endLoop){
-                            UniRes = web3.toAscii(Univalue);
-                            UniRes = UniRes.replace(/\0/g, '');
-                            //console.log(UniRes);
-                            if (universityCode == UniRes) {
-                                $scope.hideSubmit = false;
-                                $scope.Checkloader = false;
-                                $scope.Warnigs = 'Result already shared to this university';
-                                $scope.$digest();
-                                $scope.endLoop = true;
-                            }
-                            else
-                            {
-                               $scope.Checkloader = false; 
-                               $scope.hideSubmit = true;
-                               $scope.endLoop = true;
-                               $scope.$digest();
-                            }
-                           }
-                        });
+                        if (result[0].length > 0) {
+                            angular.forEach(result[0], function (Univalue, Unikey) {
+                                if (!$scope.endLoop) {
+                                    UniRes = web3.toAscii(Univalue);
+                                    UniRes = UniRes.replace(/\0/g, '');
+                                    console.log(result[0].length);
+                                    if (universityCode == UniRes) {
+                                        $scope.hideSubmit = false;  
+                                        $scope.loaderSubmit = false;                                     
+                                        $scope.Warnigs = 'Result already shared to this university';
+                                        $scope.$digest();
+                                        $scope.endLoop = true;
+                                    }
+                                    else {
+                                        $scope.hideSubmit = true;   
+                                        $scope.loaderSubmit = false;                                     
+                                        $scope.$digest();
+                                    }
+                                }
+                            });
+                        }
+                        else {                            
+                            $scope.hideSubmit = true;
+                            $scope.loaderSubmit = false;
+                            $scope.endLoop = true;
+                            $scope.$digest();
+                        }
 
                     }
                     else {
                         console.error(error);
                         $scope.Warnigs = error;
-                        $scope.Checkloader = false;
+                        $scope.loaderSubmit = false;
                         $scope.$digest();
-                        return false;
                     }
                 });
 
@@ -85,14 +99,13 @@ app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Servi
     $scope.Warnigs = "";
     $scope.successMessage = "";
     $scope.returnHashString = "";
-    $scope.hideSubmit = true;
+    $scope.hideSubmit = false;
     $scope.loader = true;
     var UUID = 'C' + $scope.sessionYear + $scope.schoolCode + $scope.CandDetails[0].candCode;
     $rootScope.CandResultContract.checkOwnershipOfResult(UUID, $scope.CandDetails[0].candAddress, function (error, result) {
 
         if (result) {
             $scope.Warnigs = "";
-            $scope.hideSubmit = false;
             $scope.ShowCanDetails = true;
 
             //start code for verify token
@@ -111,7 +124,6 @@ app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Servi
                             $scope.hasString = $scope.ciphertext;
                             $scope.UUID = UUID;
                             $scope.hideToken = false;
-                            $scope.hideSubmit = true;
                             $scope.$digest();
                         }
 
@@ -123,16 +135,60 @@ app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Servi
         }
         else {
             $scope.Warnigs = "Result is not yet available.";
-            $scope.hideSubmit = true;
             $scope.ShowCanDetails = false;
             $scope.loader = false;
             $scope.$digest();
         }
     });
 
+    $scope.getTransactionStatus = function (transHashString) {
+
+        web3.eth.getTransactionReceipt(transHashString, function (error, result) {
+            if (result != null && result != "") {
+                if (!error) {
+                    console.log(result);
+                    if (result.status == "0x1") {
+                        console.log("success");
+                        $scope.successMessage = 'Result details have been sent to university successfully!';
+                        $scope.statusMsg = "completed";
+                        $scope.loaderStatusMsg = true;
+                        $scope.loaderStatus = false;
+                        $interval.cancel($scope.chkStatus);
+                        $scope.$digest();
+                    }
+                    else {
+                        $scope.statusMsg = "failure";
+                        $scope.Warnigs = 'There is some problem in sending result to university';
+                        $scope.loaderStatusMsg = true;
+                        $scope.loaderStatus = false;
+                        $scope.$digest();
+                    }
+                }
+                else {
+                    $scope.Warnigs = error;                    
+                    $scope.loaderStatus = false;
+                    $scope.loaderStatusMsg = false;
+                    $scope.$digest();
+                    return false;
+                }
+            } else {                
+                $scope.loaderStatus = true;
+                $scope.loaderStatusMsg = true;
+                $scope.statusMsg = "processing";
+                $scope.successMessage = 'Result details sending to university intiated!';
+                $scope.$digest();
+            }
+        });
+
+
+    };
+
 
     $scope.fn_submit = function () {
         $scope.loaderSubmit = true;
+        $scope.Warnigs = "";
+        $scope.hideSubmit = false;
+        console.log($scope.universityVal);
         if (typeof $scope.schoolCode != 'undefined' || typeof $scope.CandDetails[0].candCode != 'undefined') {
             var UUID = 'C' + $scope.sessionYear + $scope.schoolCode + $scope.CandDetails[0].candCode;
 
@@ -168,23 +224,28 @@ app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Servi
             $rootScope.CandResultContract.addInsCandEvent($scope.universityVal, UUID
                 , function (error, result) {
                     if (!error) {
-                        $scope.successMessage = 'Result shared to university successfully!';
+                        $scope.loaderStatus = true;
+                        $scope.loaderStatusMsg = true;
+                        $scope.loaderSubmit = false;
+                        $scope.statusMsg = "processing";
+                        $scope.successMessage = 'Result details sending to university intiated!';
                         $scope.returnHashString = 'Transaction Hash : ' + result;
                         console.log(result);
-                        $scope.hideSubmit = true;
-                        $scope.loaderSubmit = false;
+                        $scope.hideSubmit = false;
                         $scope.Tokenloader = false;
                         $scope.hideToken = false;
+                        $scope.transHashString = result;
+                        //$sessionStorage.TransHashList.push(result);                         
+                        $scope.chkStatus = $interval($scope.getTransactionStatus, 5000, 0, true, $scope.transHashString);
                         $scope.$digest();
 
                     }
                     else {
-                        console.error(error);
                         $scope.Warnigs = error;
+                        $scope.loaderStatus = false;
                         $scope.loaderSubmit = false;
-                        $scope.Tokenloader = false;
+                        $scope.hideSubmit = true;
                         $scope.$digest();
-                        return false;
                     }
                 });
 

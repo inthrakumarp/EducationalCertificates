@@ -1,15 +1,44 @@
 //app.controller('controller name',[dependencies, call back function]);
 //scope is a object used to join both view and controller
-app.controller('universityController', ['$scope', '$rootScope', '$filter', 'Service_schoolCandDetails', 'service_universities', function ($scope, $rootScope, $filter, Service_schoolCandDetails, service_universities) {
+app.controller('universityController', ['$scope', '$rootScope', '$filter', 'Service_schoolCandDetails', 'service_universities', '$sessionStorage', '$window', '$mdDialog', function ($scope, $rootScope, $filter, Service_schoolCandDetails, service_universities, $sessionStorage, $window, $mdDialog) {
 
     $scope.ShowCanDetails = false;
     $scope.Warnigs = "";
     $scope.Candloader = true;
     $scope.showUUID = false;
+    $scope.loader = false;
+    $scope.transViewlink = false;
 
     $scope.fn_clear = function () {
         $scope.Warnigs = "";
-    }
+    };
+
+    $scope.customFullscreen = false;
+    $scope.showAdvanced = function (ev) {
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'transactionHistoryView.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            fullscreen: $scope.customFullscreen,
+            scope: $scope
+
+        })
+    };
+
+
+    function DialogController($scope, $mdDialog) {
+
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        };
+
+    };
+
+
+
+    console.log($sessionStorage.TransHashList);
 
     $scope.universityDetails = service_universities.universityDetails;
 
@@ -28,77 +57,19 @@ app.controller('universityController', ['$scope', '$rootScope', '$filter', 'Serv
                 angular.forEach(result[1], function (CandValue, Candkey) {
                     CandRes = web3.toAscii(CandValue);
                     CandRes = CandRes.replace(/\0/g, '');
-                    console.log(CandRes);
+                    //console.log(CandRes);
                     $scope.UUIDArray.push(CandRes);
-                    $scope.Candloader = false;
-                    $scope.showUUID = true;
-                    $scope.$digest();
                 });
-
+                $scope.Candloader = false;
+                $scope.showUUID = true;
+                $scope.$digest();
             }
 
         });
 
 
-    //console.log(web3.eth);
-    /*web3.eth.getTransactionList('0xbed184cbdbd29fef45d677b5417a861702645fce', function (error, result){if (!error) {
-       console.log(result)}
-        });*/
-
-    web3.eth.getBlock(0, function (error, result) {
-        if (!error) {
-            //console.log(result)
-            /*var date1 = new Date(result.timestamp*1000);
-            console.log(date1);
-             console.log(date1.toUTCString())*/
-        }
-        else console.log(error)
-    });
-
-    web3.eth.getTransaction('0xf8acc10427cedfb9a6744aa281b898c7f24c598111df5fc2b14b98f3aa4ced1a', function (error, result) {
-        if (!error) {
-console.log(result);
-            web3.eth.getBlock(result.blockNumber, function (error, result) {
-                if (!error) {
-                    console.log(result)
-                    var date1 = new Date(result.timestamp * 1000);
-                    console.log(date1);
-                    console.log(date1.toUTCString())
-                }
-            });
-            //console.log(web3.eth.getBlock(2303652).timestamp)
-        }
-    });
 
 
-
-    //web3.eth.blockNumber(function (error, result){if (!error) {console.log(result)}}); 
-
-    web3.eth.filter({ fromBlock: 2303771, toBlock: 2332151, address: '0xbed184cbdbd29fef45d677b5417a861702645fce' }, function (error, result) {
-        if (!error) {
-            // console.log(result)
-        }
-    });
-    /*filter.get(function(error, result) {
-      if(!error){
-        var info = web3.eth.getBlock(result , function(error, result){
-           if(!error){
-             var trans = web3.eth.getTransaction(result.transactions[1], function(error,result){
-               if(!error){
-                 var str = web3.toAscii(result.input);
-                 console.log(str);
-               }else{
-                  console.log(error);
-               }
-             });
-           }else{
-              console.log(error);
-           }
-         });
-     }else{
-        console.log(error);
-      }
-    })*/
 
     $scope.fn_getCandDetails = function (UUID) {
         $scope.ShowCanDetails = false;
@@ -106,6 +77,49 @@ console.log(result);
         var vm = this;
         var res;
         if (typeof UUID != 'undefined' || typeof UUID != 'undefined') {
+            if (typeof $sessionStorage.TransHashList != 'undefined') {
+                $scope.getTransactionDetails = ($filter('filter')($sessionStorage.TransHashList, { UUID: UUID }));
+                console.log($scope.getTransactionDetails);
+                if ($scope.getTransactionDetails.length > 1) {
+                    $scope.transViewlink = true;
+
+                    web3.eth.getTransactionReceipt($scope.getTransactionDetails[0].TransHash, function (error, result) {
+                        if (!error) {
+                            //console.log(result);
+                            $scope.ProvidertransactionDetails = result;
+                            web3.eth.getBlock(result.blockNumber, function (error, result) {
+                                if (!error) {
+                                    //console.log(result)
+                                    $scope.ProviderBlockDetails = result;
+                                    var date1 = new Date(result.timestamp * 1000);
+                                    $scope.ProviderBlockDetailsTimeStamp = date1.toUTCString();
+                                }
+                            });
+                            //console.log(web3.eth.getBlock(2303652).timestamp)
+                        }
+                    });
+
+                    web3.eth.getTransactionReceipt($scope.getTransactionDetails[1].TransHash, function (error, result) {
+                        if (!error) {
+                            //console.log(result);
+                            $scope.SchooltransactionDetails = result;
+                            web3.eth.getBlock(result.blockNumber, function (error, result) {
+                                if (!error) {
+                                    //console.log(result)
+                                    $scope.SchoolBlockDetails = result;
+                                    var date1 = new Date(result.timestamp * 1000);
+                                    $scope.SchoolBlockDetailsTimeStamp = date1.toUTCString();
+                                }
+                            });
+                            //console.log(web3.eth.getBlock(2303652).timestamp)
+                        }
+                    });
+                }
+                else
+                    $scope.transViewlink = false;
+            }
+            else
+                $scope.transViewlink = false;
             $scope.loader = true;
 
             /*var encryptedUUID = CryptoJS.AES.encrypt(UUID,
@@ -122,10 +136,12 @@ console.log(result);
                 return false;
             }*/
             //console.log(UUID);
+            //$scope.getTransDetails = ($filter('filter')($sessionStorage.TransHashList, { "UUID": UUID }));
+
 
             $rootScope.CandResultContract.getResultByUUID(UUID, function (error, result) {
                 if (!error) {
-                    console.log(result);
+                    //console.log(result);
                     vm.res = web3.toAscii(result);
                     vm.res = vm.res.replace(/\0/g, '');
                     //console.log("result data : ", vm.res);
@@ -145,7 +161,7 @@ console.log(result);
                         $scope.loader = false;
 
                         $scope.CandDetails = JSON.parse($scope.descrString);
-                        console.log($scope.CandDetails.candCode);
+                        //console.log($scope.CandDetails.candCode);
                         $scope.$digest();
 
                     }

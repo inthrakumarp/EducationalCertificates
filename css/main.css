@@ -1,8 +1,12 @@
 div.container {
     width: 100%;
-    height: 90%;
+    height: 100%;
     border: 1px solid gray;
     font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+}
+select
+{
+    width:180px;
 }
 
 header, footer {

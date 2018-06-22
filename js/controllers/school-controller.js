@@ -1,15 +1,20 @@
 //app.controller('controller name',[dependencies, call back function]);
 //scope is a object used to join both view and controller
-app.controller('schoolController', ['$scope', '$rootScope', '$filter', '$http', 'Service_schoolCandDetails', function ($scope, $rootScope, $filter, $http, Service_schoolCandDetails) {
+app.controller('schoolController', ['$scope', '$rootScope', '$filter', '$http', 'Service_schoolCandDetails', '$interval', '$sessionStorage', function ($scope, $rootScope, $filter, $http, Service_schoolCandDetails, $interval, $sessionStorage) {
 
         $scope.ShowCanDetails = false;
-        $scope.hideSubmit = true;
+        $scope.hideSubmit = false;
         $scope.successMessage = "";
-        $scope.returnHashString = "";
         $scope.Warnigs = "";
         $scope.loaderSubmit = false;
         $scope.loader = false;
+        $scope.loaderStatus = false;
+        $scope.loaderStatusMsg = false;
+        $scope.returnHashString = "";
+        $scope.statusMsg = "";
         $scope.schoolCandDetails = Service_schoolCandDetails.schoolCandDetails;
+
+        console.log($sessionStorage.TransHashList);
 
         $scope.SchoolcandDetails = ($filter('filter')($scope.schoolCandDetails, { schoolAddress: $rootScope.LoginschoolAddress }));
 
@@ -20,17 +25,22 @@ app.controller('schoolController', ['$scope', '$rootScope', '$filter', '$http', 
 
 
         $scope.fn_getCand = function (candVal) {
+                $scope.ShowCanDetails = false;
+                $scope.hideSubmit = false;
+                $scope.successMessage = "";
+                $scope.Warnigs = "";
+                $scope.loaderSubmit = false;
+                $scope.loader = true;
+                $scope.loaderStatus = false;
+                $scope.loaderStatusMsg = false;
+                $scope.returnHashString = "";
+                $scope.statusMsg = "";
                 if (typeof $scope.candVal != 'undefined') {
                         $scope.CandDetails = ($filter('filter')($scope.allCandDetails, { candCode: $scope.candVal }));
                         //
                         var vm = this;
                         var res;
-                        $scope.Warnigs = "";
-                        $scope.successMessage = "";
-                        $scope.returnHashString = "";
-                        $scope.ShowCanDetails = false;
-                        $scope.hideSubmit = true;
-                        $scope.loader = true;
+
                         var UUID = 'C' + $scope.SchoolcandDetails[0].sessionYear + $scope.SchoolcandDetails[0].schoolCode + $scope.CandDetails[0].candCode;
                         $rootScope.CandResultContract.getResultByUUID(UUID, function (error, result) {
                                 if (!error) {
@@ -59,7 +69,7 @@ app.controller('schoolController', ['$scope', '$rootScope', '$filter', '$http', 
                                                                 console.log(result);
                                                                 if (result) {
                                                                         $scope.Warnigs = "";
-                                                                        $scope.hideSubmit = true;
+                                                                        $scope.hideSubmit = false;
                                                                         $scope.loader = false;
                                                                         $scope.Warnigs = "Already result has been sent to candidate.";
                                                                         $scope.ShowCanDetails = true;
@@ -67,7 +77,7 @@ app.controller('schoolController', ['$scope', '$rootScope', '$filter', '$http', 
                                                                 }
                                                                 else {
                                                                         $scope.Warnigs = "";
-                                                                        $scope.hideSubmit = false;
+                                                                        $scope.hideSubmit = true;
                                                                         $scope.loader = false;
                                                                         $scope.ShowCanDetails = true;
                                                                         $scope.$digest();
@@ -82,7 +92,7 @@ app.controller('schoolController', ['$scope', '$rootScope', '$filter', '$http', 
                                         }
                                         else {
                                                 $scope.Warnigs = "Candiate results not available in blockchain.";
-                                                $scope.hideSubmit = true;
+                                                $scope.hideSubmit = false;
                                                 $scope.ShowCanDetails = false;
                                                 $scope.loader = false;
                                                 $scope.$digest();
@@ -102,28 +112,83 @@ app.controller('schoolController', ['$scope', '$rootScope', '$filter', '$http', 
                         $scope.ShowCanDetails = false;
                 }
         };
+
+        $scope.getTransactionStatus = function (transHashString) {
+
+                web3.eth.getTransactionReceipt(transHashString, function (error, result) {
+                        if (result != null && result != "") {
+                                if (!error) {
+                                        console.log(result);
+                                        if (result.status == "0x1") {
+                                                console.log("success");
+                                                $scope.successMessage = 'Result details have been sent to candidate successfully!';
+                                                $scope.statusMsg = "completed";
+                                                $scope.loaderSubmit = false;
+                                                $scope.loaderStatusMsg = true;
+                                                $scope.loaderStatus = false;
+                                                $interval.cancel($scope.chkStatus);
+                                                $scope.$digest();
+                                        }
+                                        else {
+                                                $scope.statusMsg = "failure";
+                                                $scope.Warnigs = 'There is some problem in sending result to candidate';
+                                                $scope.loaderStatusMsg = true;
+                                                $scope.loaderStatus = false;
+                                                $scope.$digest();
+                                        }
+                                }
+                                else {
+                                        $scope.Warnigs = error;
+                                        $scope.loaderSubmit = false;
+                                        $scope.loaderStatus = false;
+                                        $scope.loaderStatusMsg = false;
+                                        $scope.$digest();
+                                        return false;
+                                }
+                        } else {
+                                $scope.loaderSubmit = false;
+                                $scope.loaderStatus = true;
+                                $scope.loaderStatusMsg = true;
+                                $scope.statusMsg = "processing";
+                                $scope.successMessage = 'Result details sending to candidate intiated!';
+                                $scope.$digest();
+                        }
+                });
+
+
+        };
+
         $scope.fn_submit = function () {
                 if (typeof $scope.schoolVal != 'undefined' || typeof $scope.candVal != 'undefined') {
                         var UUID = 'C' + $scope.SchoolcandDetails[0].sessionYear + $scope.SchoolcandDetails[0].schoolCode + $scope.CandDetails[0].candCode;
 
                         $scope.loaderSubmit = true;
+                        $scope.Warnigs = "";
+                        $scope.hideSubmit = false;
+
                         $rootScope.CandResultContract.transferResultOwnership(UUID, $scope.CandDetails[0].candAddress
                                 , function (error, result) {
                                         if (!error) {
-                                                $scope.successMessage = 'Result details have been sent to candidate successfully!';
-                                                $scope.returnHashString = 'Transaction Hash : ' + result;
-                                                console.log(result);
-                                                $scope.hideSubmit = true;
+                                                $scope.loaderStatus = true;
+                                                $scope.loaderStatusMsg = true;
                                                 $scope.loaderSubmit = false;
+                                                $scope.statusMsg = "processing";
+                                                $scope.successMessage = 'Result details sending to candidate intiated!';
+                                                $scope.returnHashString = 'Transaction Hash : ' + result;
+                                                $scope.transHashString = result;
+                                                //$sessionStorage.TransHashList.push(result); 
+                                                $sessionStorage.TransHashList.push({ "UUID": UUID, "TransHash": result });
+                                                $scope.chkStatus = $interval($scope.getTransactionStatus, 5000, 0, true, $scope.transHashString);
                                                 $scope.$digest();
 
                                         }
-                                        else
-                                                console.error(error);
-                                        $scope.Warnigs = error;
-                                        $scope.loaderSubmit = false;
-                                        $scope.$digest();
-                                        return false;
+                                        else {
+                                                $scope.Warnigs = error;
+                                                $scope.loaderStatus = false;
+                                                $scope.loaderSubmit = false;
+                                                $scope.hideSubmit = true;
+                                                $scope.$digest();
+                                        }
                                 });
 
 

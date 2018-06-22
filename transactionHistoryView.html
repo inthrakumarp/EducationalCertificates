@@ -1,0 +1,85 @@
+
+<!--<html ng-app="MainModule">
+
+<head>
+	<title>Educational certificates</title>
+	<script type="text/javascript" src="node_modules/angular/angular.js"></script>	
+	<script type="text/javascript" src="node_modules/web3/dist/web3.js"></script>
+	<script type="text/javascript" src="node_modules/angular/ngStorage.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular/angular.material.js"></script>
+	<script type="text/javascript" src="node_modules/angular/angular-animate.js"></script>
+	<script type="text/javascript" src="node_modules/angular/angular-aria.js"></script>
+	<script type="text/javascript" src="node_modules/angular/angular-messages.min.js"></script>
+
+	<script type="text/javascript" src="js/app.js"></script>	
+	<script type="text/javascript" src="js/controllers/university-controller.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/angular-material.css">
+
+</head>
+
+<body>
+<body>-->
+	<div class="container">
+<div ng-controller="universityController" >
+	<table>
+		<tr>
+			<td>
+				<h3>Transaction details</h3>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Approved by provider</b></td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td>Transaction Hash:</td>
+						<td>{{ProvidertransactionDetails.transactionHash}}</td>
+					</tr>
+					<tr>
+						<td>Block number:</td>
+						<td>{{ProvidertransactionDetails.blockNumber}}</td>
+					</tr>
+					<tr>
+						<td>Time stamp:</td>
+						<td>{{ProviderBlockDetailsTimeStamp}}</td>
+					</tr>
+					<tr>
+						<td>From address:</td>
+						<td>{{ProvidertransactionDetails.from}}</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td><b>Approved by school</b></td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td>Transaction Hash:</td>
+						<td>{{SchooltransactionDetails.transactionHash}}</td>
+					</tr>
+					<tr>
+						<td>Block number:</td>
+						<td>{{SchooltransactionDetails.blockNumber}}</td>
+					</tr>
+					<tr>
+						<td>Time stamp:</td>
+						<td>{{SchoolBlockDetailsTimeStamp}}</td>
+					</tr>
+					<tr>
+						<td>From address:</td>
+						<td>{{SchooltransactionDetails.from}}</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr><td align="center"><a href="#" ng-click="cancel()">Close</a></td></tr>		
+	</table>
+</div></div>
+<!--</body>
+</html>-->
