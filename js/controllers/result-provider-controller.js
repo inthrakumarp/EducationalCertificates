@@ -13,9 +13,11 @@ app.controller('resultProviderController', ['$scope', '$rootScope', '$filter', '
         $scope.returnHashString = "";
         $scope.statusMsg = "";
 
+if (typeof $sessionStorage.TransHashList == 'undefined') {
         $sessionStorage.TransHashList = [{}];
+}
 
-        //console.log($sessionStorage.textMsg);
+        console.log($sessionStorage.TransHashList);
 
         $scope.schoolCandDetails = Service_schoolCandDetails.schoolCandDetails;
 
