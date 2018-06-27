@@ -34,7 +34,7 @@ app.run(function ($rootScope) {
 		if (typeof web3.eth.defaultAccount !== 'undefined') {
 			if (web3.eth.defaultAccount.toUpperCase() == $rootScope.providerAddress.toUpperCase()) {
 				$rootScope.showProviderScreen = true;
-				$rootScope.whohaslogged = "Result provider";
+				$rootScope.whohaslogged = "Results provider";
 			}
 			else if (web3.eth.defaultAccount.toUpperCase() == $rootScope.School01Address.toUpperCase() || web3.eth.defaultAccount.toUpperCase() == $rootScope.School02Address.toUpperCase()) {
 				$rootScope.showSchoolScreen = true;
@@ -446,7 +446,7 @@ app.run(function ($rootScope) {
 			// old contract replaced on 24-MAY-18
 			// $rootScope.CandResultContract = candidateContractABI.at("0xbed184cbdbd29fef45d677b5417a861702645fce");
 			// $rootScope.CandResultContract = candidateContractABI.at("0x452ff37f684003e542bd3d42fd22804fd9d30426");
-			$rootScope.CandResultContract = candidateContractABI.at("0x7909d40ae5681d8d9ef7eacca1d98166597f5678");
+			$rootScope.CandResultContract = candidateContractABI.at("0x16a33907f8eab1fe2a933ae74d43104f458b9385");
 		}
 		else {
 			$rootScope.errorMessage = 'Authentication failed..!';
