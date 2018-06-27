@@ -245,37 +245,6 @@ app.run(function ($rootScope) {
 		"constant": false,
 		"inputs": [
 			{
-				"name": "UUID",
-				"type": "bytes32"
-			}
-		],
-		"name": "getTransDetailsByUUID",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			},
-			{
-				"name": "",
-				"type": "address"
-			},
-			{
-				"name": "",
-				"type": "bool"
-			},
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
 				"name": "msgHash",
 				"type": "bytes32"
 			},
@@ -391,6 +360,37 @@ app.run(function ($rootScope) {
 			{
 				"name": "res",
 				"type": "bytes"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "UUID",
+				"type": "bytes32"
+			}
+		],
+		"name": "getTransDetailsByUUID",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "bool"
+			},
+			{
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"payable": false,
