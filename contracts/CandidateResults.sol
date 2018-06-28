@@ -45,7 +45,7 @@ struct EventInsCand {
         EventInsCandList[eventInsId] = EventInsCand(InsUUID,CandUUID);
         EventInsAdded(msg.sender, eventInsId);
     }
-    function getTransDetailsByUUID(bytes32 UUID) public returns (address,address,bool,bool) {
+    function getTransDetailsByUUID(bytes32 UUID) constant returns (address,address,bool,bool) {
         
    return (resultsStore[UUID].candidateAddress, resultsStore[UUID].schoolAddress, resultsStore[UUID].approvedBySchool,resultsStore[UUID].approvedByProvider);
     }
@@ -143,8 +143,8 @@ struct EventInsCand {
         
         addEvent(UUID);
         resultsStore[UUID] = CandidateResult(candAddress, schoolAddress, result, initialized, schoolApproval, providerApproval);
-        
-         ownershipStore[msg.sender][UUID] = true;
+        // When the results provider adds the results to blockchain, the ownership of the results will be to school directly.
+         ownershipStore[schoolAddress][UUID] = true;
 
        return true;
     }
@@ -158,18 +158,14 @@ struct EventInsCand {
             return false;
         }
 
-        // To do: check who is the current owner - if Provider, then transfer to school. If school , then transfer to Candidate. You can take these addresses from the resultsStore struct
-        if(resultsStore[UUID].approvedByProvider){
-            resultsStore[UUID].approvedBySchool = true;
-        } else {
-            resultsStore[UUID].approvedByProvider = true;
-        }
+        // When the results is added itself, the approvedByProvider will be set to true. transferResultOwnership function will be called only when the school approves the result
+        resultsStore[UUID].approvedBySchool = true;
         ownershipStore[msg.sender][UUID] = false;
         ownershipStore[to][UUID] = true;
         return true;
     }
 
-    function getResultByUUID(bytes32 UUID) view public returns (bytes res) {
+    function getResultByUUID(bytes32 UUID) public constant returns (bytes res) {
         return(resultsStore[UUID].result);
     }
    
@@ -190,7 +186,7 @@ struct EventInsCand {
 
         return true;
     }
-    function verifyToken(string memberToken, bytes32 UUIDs) public returns (bool) {
+    function verifyToken(string memberToken, bytes32 UUIDs) constant returns (bool) {
         return sha3(tokenStore[UUIDs].universityToken) == sha3(memberToken);
     }
 

@@ -49,7 +49,7 @@
 							<td width="40%"><b>Select candidate to view results <span>*</span>:</b></td>
 							<td width="30%"><select ng-model="candVal" name="candVal" ng-required="true" ng-change="fn_getCandDetails(candVal)">
 					    <option  value="" >--Select candidate--</option>
-						<option ng-repeat="cand in UUIDArray" value="{{cand}}">{{cand}}</option>					
+						<option ng-repeat="cand in UUIDArray" value="{{cand.UUID}}">{{cand.UUID}}-{{cand.candName}}</option>					
 					</select></td>
 							<td><span ng-if="frmSchoolCand.candVal.$invalid">Please select candidate</span></td>
 						</tr>

@@ -445,8 +445,8 @@ app.run(function ($rootScope) {
 ]);
 			// old contract replaced on 24-MAY-18
 			// $rootScope.CandResultContract = candidateContractABI.at("0xbed184cbdbd29fef45d677b5417a861702645fce");
-			// $rootScope.CandResultContract = candidateContractABI.at("0x452ff37f684003e542bd3d42fd22804fd9d30426");
-			$rootScope.CandResultContract = candidateContractABI.at("0x16a33907f8eab1fe2a933ae74d43104f458b9385");
+			//$rootScope.CandResultContract = candidateContractABI.at("0x452ff37f684003e542bd3d42fd22804fd9d30426");
+			$rootScope.CandResultContract = candidateContractABI.at("0x84cb1724d798b5aee55ac754cf70e970f62accf8");
 		}
 		else {
 			$rootScope.errorMessage = 'Authentication failed..!';
@@ -471,10 +471,10 @@ app.factory('Service_schoolCandDetails', function () {
 			"sessionMonth": "MAY",
 			"sessionYear": "2018",
 			"candidates": [{
-				"candCode": "C101", "candAddress": "0x41B4e88f9eECEA63812c74C81ba8Df85351CF8A4", "candName": "Raju M", "resultCode": "D", "totalPoints": 75, "resultDescription": "DIPLOMA AWARDED",
+				"candCode": "C401", "candAddress": "0x41B4e88f9eECEA63812c74C81ba8Df85351CF8A4", "candName": "Raju M", "resultCode": "D", "totalPoints": 75, "resultDescription": "DIPLOMA AWARDED",
 				"subjects": [{ "subjectName": "Biology", "subjectLvl": "HL", "subjectGrade": "7" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "8" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "5" }]
 			},
-			{ "candCode": "C102", "candAddress": "0x07Bb1A5A92ADc3E7820a94F017c850bB0f027cba", "candName": "Ramesh", "resultCode": "C", "totalPoints": 60, "resultDescription": "COURSE AWARDED", "subjects": [{ "subjectName": "Zoology", "subjectLvl": "HL", "subjectGrade": "A" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "5" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "4" }, { "subjectName": "Computer", "subjectLvl": "SL", "subjectGrade": "7" }] }]
+			{ "candCode": "C402", "candAddress": "0x07Bb1A5A92ADc3E7820a94F017c850bB0f027cba", "candName": "Ramesh", "resultCode": "C", "totalPoints": 60, "resultDescription": "COURSE AWARDED", "subjects": [{ "subjectName": "Zoology", "subjectLvl": "HL", "subjectGrade": "A" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "5" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "4" }, { "subjectName": "Computer", "subjectLvl": "SL", "subjectGrade": "7" }] }]
 		},
 		{
 			"schoolCode": "S000002",
@@ -483,17 +483,17 @@ app.factory('Service_schoolCandDetails', function () {
 			"sessionMonth": "MAY",
 			"sessionYear": "2018",
 			"candidates": [{
-				"candCode": "C103", "candAddress": "0x3F112695a0AbFcfCdAad9a2C09d4ebb7AF4E2257", "candName": "Inthra kumar", "resultCode": "D", "totalPoints": 50, "resultDescription": "DIPLOMA AWARDED",
+				"candCode": "C10049", "candAddress": "0x3F112695a0AbFcfCdAad9a2C09d4ebb7AF4E2257", "candName": "Inthra kumar", "resultCode": "D", "totalPoints": 50, "resultDescription": "DIPLOMA AWARDED",
 				"subjects": [{ "subjectName": "Biology", "subjectLvl": "HL", "subjectGrade": "7" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "5" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "4" }]
 			},
-			{ "candCode": "C104", "candAddress": "0xA62dc2303BD74eBDBa79B37FBd7184b8EE4Ce43a", "candName": "Ezhilarasan", "resultCode": "D", "totalPoints": 60, "resultDescription": "DIPLOMA AWARDED", "subjects": [{ "subjectName": "Biology", "subjectLvl": "HL", "subjectGrade": "7" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "5" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "4" }] }
+			{ "candCode": "C103", "candAddress": "0xA62dc2303BD74eBDBa79B37FBd7184b8EE4Ce43a", "candName": "Ezhilarasan", "resultCode": "D", "totalPoints": 60, "resultDescription": "DIPLOMA AWARDED", "subjects": [{ "subjectName": "Biology", "subjectLvl": "HL", "subjectGrade": "7" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "5" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "4" }] }
 				,
 			{
-				"candCode": "C105", "candAddress": "0xA62dc2303BD74eBDBa79B37FBd7184b8EE4Ce43a", "candName": "Karthikeyan P", "resultCode": "D", "totalPoints": 70, "resultDescription": "COURSE AWARDED",
+				"candCode": "C104", "candAddress": "0xA62dc2303BD74eBDBa79B37FBd7184b8EE4Ce43a", "candName": "Karthikeyan P", "resultCode": "D", "totalPoints": 70, "resultDescription": "COURSE AWARDED",
 				"subjects": [{ "subjectName": "Biology", "subjectLvl": "HL", "subjectGrade": "7" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "6" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "7" }]
 			},
 			{
-				"candCode": "C106", "candAddress": "0xA62dc2303BD74eBDBa79B37FBd7184b8EE4Ce43a", "candName": "Murali", "resultCode": "D", "totalPoints": 75, "resultDescription": "COURSE AWARDED",
+				"candCode": "C105", "candAddress": "0xA62dc2303BD74eBDBa79B37FBd7184b8EE4Ce43a", "candName": "Murali", "resultCode": "D", "totalPoints": 75, "resultDescription": "COURSE AWARDED",
 				"subjects": [{ "subjectName": "Biology", "subjectLvl": "HL", "subjectGrade": "7" }, { "subjectName": "Chemistry", "subjectLvl": "SL", "subjectGrade": "8" }, { "subjectName": "Physics", "subjectLvl": "SL", "subjectGrade": "8" }]
 			}]
 		}

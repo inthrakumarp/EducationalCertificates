@@ -22,8 +22,8 @@ app.controller('universityController', ['$scope', '$rootScope', '$filter', 'Serv
             targetEvent: ev,
             clickOutsideToClose: true,
             fullscreen: $scope.customFullscreen,
-            scope: $scope
-
+            scope: $scope,
+            preserveScope: true
         })
     };
 
@@ -55,10 +55,38 @@ app.controller('universityController', ['$scope', '$rootScope', '$filter', 'Serv
             if (!error) {
 
                 angular.forEach(result[1], function (CandValue, Candkey) {
-                    CandRes = web3.toAscii(CandValue);
+
+                    $rootScope.CandResultContract.getResultByUUID(CandValue, function (error, result) {
+                if (!error) {
+                    var res;
+                    res = web3.toAscii(result);
+                    res = res.replace(/\0/g, '');
+                    //console.log("result data : ", vm.res);
+                    var cipherParams = CryptoJS.lib.CipherParams.create({
+                        ciphertext: CryptoJS.enc.Base64.parse(res)
+                    });
+                    var decryptedResult = CryptoJS.AES.decrypt(
+                        cipherParams,
+                        $rootScope.base64Key,
+                        { iv: $rootScope.iv }
+                    );
+                    $scope.descrString = decryptedResult.toString(CryptoJS.enc.Utf8);
+
+                        $scope.CandDetails = JSON.parse($scope.descrString);
+                        console.log($scope.CandDetails.candName);
+                        CandRes = web3.toAscii(CandValue);
                     CandRes = CandRes.replace(/\0/g, '');
                     //console.log(CandRes);
-                    $scope.UUIDArray.push(CandRes);
+                    $scope.UUIDArray.push({UUID:CandRes,candName:$scope.CandDetails.candName});
+                    console.log($scope.UUIDArray);
+                        $scope.$digest();
+
+                    
+                   
+                }
+            });
+
+                   
                 });
                 $scope.Candloader = false;
                 $scope.showUUID = true;

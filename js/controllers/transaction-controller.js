@@ -15,6 +15,7 @@ app.controller('transactionController', ['$scope', '$rootScope', '$filter', 'Ser
                         return;
                 }
                 $scope.loader = true;
+                var myEl = angular.element(document.querySelector('#transId'));
                 angular.forEach(result[1], function (value, key) {
                         valUUID = web3.toAscii(value);
                         valUUID = valUUID.replace(/\0/g, '');
@@ -24,7 +25,6 @@ app.controller('transactionController', ['$scope', '$rootScope', '$filter', 'Ser
 
                                         //console.log(resultTrans);
 
-                                        var myEl = angular.element(document.querySelector('#transId'));
                                         if (resultTrans[3] == true)
                                                 var providerApproval = "<td style='color:green !important;'>" + resultTrans[3] + "</td>";
                                         else
@@ -35,10 +35,14 @@ app.controller('transactionController', ['$scope', '$rootScope', '$filter', 'Ser
                                         else
                                                 var SchoolApproval = "<td style='color:red !important;'>" + resultTrans[2] + "</td>";
 
+                                        valUUID = web3.toAscii(value);
+                                        valUUID = valUUID.replace(/\0/g, '');
+
                                         var transcContent = "<tr><td>" + valUUID + "</td><td>" + resultTrans[1] + "</td><td>" + resultTrans[0] + "</td>" + providerApproval + SchoolApproval + "</tr>";
                                         myEl.append(transcContent);
                                         $scope.loader = false;
                                         $scope.$digest();
+                                        return false
 
                                 }
                                 else {
