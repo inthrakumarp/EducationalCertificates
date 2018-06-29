@@ -108,7 +108,7 @@ app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Servi
             $scope.Warnigs = "";
             $scope.ShowCanDetails = true;
 
-           /* //start code for verify token
+           /* start code for verify token 
             var encrypted = CryptoJS.AES.encrypt(
                 UUID,
                 $rootScope.base64Key,
@@ -129,7 +129,8 @@ app.controller('candidateController', ['$scope', '$rootScope', '$filter', 'Servi
 
                     }
                 });
-            //end code for verify token*/
+            end code for verify token
+	*/
             $scope.loader = false;
             $scope.$digest();
         }
