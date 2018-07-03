@@ -443,7 +443,7 @@ app.run(function ($rootScope) {
 		"type": "event"
 	}
 ]);
-			// old contract replaced on 24-MAY-18
+			// old contract replaced on 24-MAY-18 
 			// $rootScope.CandResultContract = candidateContractABI.at("0xbed184cbdbd29fef45d677b5417a861702645fce");
 			//$rootScope.CandResultContract = candidateContractABI.at("0x452ff37f684003e542bd3d42fd22804fd9d30426");
 			//$rootScope.CandResultContract = candidateContractABI.at("0x84cb1724d798b5aee55ac754cf70e970f62accf8");
