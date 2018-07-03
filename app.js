@@ -80,6 +80,91 @@ app.run(function ($rootScope) {
 		"constant": false,
 		"inputs": [
 			{
+				"name": "UUID",
+				"type": "bytes32"
+			},
+			{
+				"name": "candAddress",
+				"type": "address"
+			},
+			{
+				"name": "schoolAddress",
+				"type": "address"
+			},
+			{
+				"name": "result",
+				"type": "bytes"
+			},
+			{
+				"name": "initialized",
+				"type": "bool"
+			},
+			{
+				"name": "schoolApproval",
+				"type": "bool"
+			},
+			{
+				"name": "providerApproval",
+				"type": "bool"
+			}
+		],
+		"name": "createResult",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "memberToken",
+				"type": "string"
+			},
+			{
+				"name": "UUIDs",
+				"type": "bytes32"
+			}
+		],
+		"name": "verifyToken",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "memberAddress",
+				"type": "address"
+			}
+		],
+		"name": "getMember",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
 				"name": "InsUUID",
 				"type": "bytes32"
 			},
@@ -146,6 +231,43 @@ app.run(function ($rootScope) {
 		"type": "function"
 	},
 	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "UUID",
+				"type": "bytes32"
+			}
+		],
+		"name": "getResultByUUID",
+		"outputs": [
+			{
+				"name": "res",
+				"type": "bytes"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "listEvents",
+		"outputs": [
+			{
+				"name": "eventIds",
+				"type": "uint256[]"
+			},
+			{
+				"name": "eventUUIDs",
+				"type": "bytes32[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"constant": false,
 		"inputs": [
 			{
@@ -153,88 +275,15 @@ app.run(function ($rootScope) {
 				"type": "bytes32"
 			},
 			{
-				"name": "candAddress",
+				"name": "to",
 				"type": "address"
-			},
-			{
-				"name": "schoolAddress",
-				"type": "address"
-			},
-			{
-				"name": "result",
-				"type": "bytes"
-			},
-			{
-				"name": "initialized",
-				"type": "bool"
-			},
-			{
-				"name": "schoolApproval",
-				"type": "bool"
-			},
-			{
-				"name": "providerApproval",
-				"type": "bool"
 			}
 		],
-		"name": "createResult",
+		"name": "transferResultOwnership",
 		"outputs": [
 			{
 				"name": "",
 				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "_senderAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "_eventId",
-				"type": "uint256"
-			}
-		],
-		"name": "EventInsAdded",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"name": "_senderAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "_eventId",
-				"type": "uint256"
-			}
-		],
-		"name": "EventAdded",
-		"type": "event"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "memberAddress",
-				"type": "address"
-			}
-		],
-		"name": "getMember",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bytes32"
 			}
 		],
 		"payable": false,
@@ -273,56 +322,31 @@ app.run(function ($rootScope) {
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
 			{
-				"name": "UUID",
-				"type": "bytes32"
+				"name": "ins",
+				"type": "uint256"
 			},
 			{
-				"name": "to",
-				"type": "address"
-			}
-		],
-		"name": "transferResultOwnership",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "memberToken",
-				"type": "string"
-			},
-			{
-				"name": "UUIDs",
+				"name": "_UUID",
 				"type": "bytes32"
 			}
 		],
-		"name": "verifyToken",
+		"name": "listInsCandEvents",
 		"outputs": [
 			{
-				"name": "",
-				"type": "bool"
+				"name": "InsUUIDs",
+				"type": "bytes32[]"
+			},
+			{
+				"name": "CandUUIDs",
+				"type": "bytes32[]"
 			}
 		],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
 	},
 	{
 		"constant": true,
@@ -341,25 +365,6 @@ app.run(function ($rootScope) {
 			{
 				"name": "",
 				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "UUID",
-				"type": "bytes32"
-			}
-		],
-		"name": "getResultByUUID",
-		"outputs": [
-			{
-				"name": "res",
-				"type": "bytes"
 			}
 		],
 		"payable": false,
@@ -398,55 +403,51 @@ app.run(function ($rootScope) {
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [],
-		"name": "listEvents",
-		"outputs": [
-			{
-				"name": "eventIds",
-				"type": "uint256[]"
-			},
-			{
-				"name": "eventUUIDs",
-				"type": "bytes32[]"
-			}
-		],
 		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
-		"constant": true,
+		"anonymous": false,
 		"inputs": [
 			{
-				"name": "ins",
+				"indexed": true,
+				"name": "_senderAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "_eventId",
 				"type": "uint256"
-			},
-			{
-				"name": "_UUID",
-				"type": "bytes32"
 			}
 		],
-		"name": "listInsCandEvents",
-		"outputs": [
+		"name": "EventAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
 			{
-				"name": "InsUUIDs",
-				"type": "bytes32[]"
+				"indexed": true,
+				"name": "_senderAddress",
+				"type": "address"
 			},
 			{
-				"name": "CandUUIDs",
-				"type": "bytes32[]"
+				"indexed": false,
+				"name": "_eventId",
+				"type": "uint256"
 			}
 		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
+		"name": "EventInsAdded",
+		"type": "event"
 	}
 ]);
 			// old contract replaced on 24-MAY-18
 			// $rootScope.CandResultContract = candidateContractABI.at("0xbed184cbdbd29fef45d677b5417a861702645fce");
 			//$rootScope.CandResultContract = candidateContractABI.at("0x452ff37f684003e542bd3d42fd22804fd9d30426");
-			$rootScope.CandResultContract = candidateContractABI.at("0x84cb1724d798b5aee55ac754cf70e970f62accf8");
+			//$rootScope.CandResultContract = candidateContractABI.at("0x84cb1724d798b5aee55ac754cf70e970f62accf8");
+			$rootScope.CandResultContract = candidateContractABI.at("0x33289c702dec6e91d931202c1ae4696531aeda26");
 		}
 		else {
 			$rootScope.errorMessage = 'Authentication failed..!';
