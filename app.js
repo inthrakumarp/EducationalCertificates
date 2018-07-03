@@ -447,7 +447,7 @@ app.run(function ($rootScope) {
 			// $rootScope.CandResultContract = candidateContractABI.at("0xbed184cbdbd29fef45d677b5417a861702645fce");
 			//$rootScope.CandResultContract = candidateContractABI.at("0x452ff37f684003e542bd3d42fd22804fd9d30426");
 			//$rootScope.CandResultContract = candidateContractABI.at("0x84cb1724d798b5aee55ac754cf70e970f62accf8");
-			// new contract for hackathon prj
+			// new contract for hackathon
 			$rootScope.CandResultContract = candidateContractABI.at("0x33289c702dec6e91d931202c1ae4696531aeda26");
 		}
 		else {
